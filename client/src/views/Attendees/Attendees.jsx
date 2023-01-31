@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { API_URL, LOGGED_IN_USER } from "../../utils/constants";
+import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem } from "../../components/StyledComponents/StyledAttendees";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -21,9 +22,16 @@ export const Attendees = () => {
     }
 
     return (
-        <div>
-            {attendees.map((attendee) => <div key={attendee.id}>{attendee.surname}</div>)}
-        </div>
+        <AttendeesList>
+            {attendees.map((attendee) => (
+            <AttendeesListItem key={attendee.id}>
+                <AttendeeName>{attendee.name}</AttendeeName>
+                <AttendeeName>{attendee.surname}</AttendeeName>
+                <AttendeeData>{attendee.email}</AttendeeData>
+                <AttendeeData>{attendee.telephone}</AttendeeData>
+            </AttendeesListItem>
+            ))}
+        </AttendeesList>
     );
 }
 
