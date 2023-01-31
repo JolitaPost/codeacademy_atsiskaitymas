@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { API_URL, LOGGED_IN_USER } from "../../utils/constants";
-import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem } from "../../components/StyledComponents/StyledAttendees";
+import { LOGGED_IN_USER } from "../../utils/constants";
+import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem } from "../../components/StyledComponents/AttendeesStyled";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -9,7 +9,7 @@ export const Attendees = () => {
 
 
     useEffect(() => {
-        fetch(`${API_URL}/attendees?userId=${LOGGED_IN_USER.id}`)
+        fetch(`${process.env.REACT_APP_API_URL}/attendees?userId=${LOGGED_IN_USER.id}`)
             .then(res => res.json())
             .then(data => {
                 setAttendees(data);
