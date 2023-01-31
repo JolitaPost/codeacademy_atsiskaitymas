@@ -8,6 +8,6 @@
 //.then(res => res.json())
 //.then(data);
 
-export const internalFetch = (url) => {  // skirta GET'ui
-    return fetch(`${process.env.REACT_APP_API_URL}${url}`).then(res => res.json());
-}
+//export const internalFetch = (url) => {  // skirta GET'ui
+//    return fetch(`${process.env.REACT_APP_API_URL}${url}`).then(res => res.json());
+//}
