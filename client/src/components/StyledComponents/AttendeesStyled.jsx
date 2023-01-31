@@ -20,7 +20,7 @@ export const AttendeesListItem = styled.li`
 `;
 
 export const AttendeeName = styled.span`
-    color: green;
+    color: darkslateblue;
     font-size: 24px;
     font-weight: 700;
 

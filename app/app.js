@@ -26,6 +26,22 @@ app.get('/attendees', (req,res) => {
     });
 });
 
+app.post('/attendees', (req, res) => {
+    const { name, surname, email, telephone, userId } = req.body;
+
+    connection.execute(
+        'INSERT INTO attendees (name, surname, email, telephone, userId) VALUES (?, ?, ?, ?, ?)',
+        [name, surname, email, telephone, userId],
+        (err, result) => {
+            connection.execute('SELECT * FROM attendees WHERE userID=?',
+            [userId],
+            (err, attendees) => {
+                res.send(attendees);
+            })
+        }
+    )
+});
+
 
 const PORT = 8000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
