@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useState } from "react"
+import { useState } from "react";
+import { API_URL, LOGGED_IN_USER } from "../../utils/constants";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -7,7 +8,7 @@ export const Attendees = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:8000/attendees?userId=1')
+        fetch(`${API_URL}/attendees?userId=${LOGGED_IN_USER.id}`)
             .then(res => res.json())
             .then(data => {
                 setAttendees(data);
