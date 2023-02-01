@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
@@ -19,14 +20,14 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-app.get('/attendees', (req,res) => {
-    const { userId } = req.query;
+app.get('/attendees', (req,res) => {  // gaunam dalyvius pagal userio id
+    const { userId } = req.query;   
     connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
         res.send(attendees);
     });
 });
 
-app.post('/attendees', (req, res) => {
+app.post('/attendees', (req, res) => {   // pridedu nauja dalyvi i attendees sarasa
     const { name, surname, email, telephone, userId } = req.body;
 
     connection.execute(
@@ -40,6 +41,42 @@ app.post('/attendees', (req, res) => {
             })
         }
     )
+});
+
+app.post('/register', (req,res) => {  // prisiregistruoja naujas useris
+    const { userName, userSurname, userEmail, userPassword } = req.body;
+    const hashedPassword = bcrypt.hashSync(userPassword, 12);
+    bcrypt.compareSync()
+
+    connection.execute(
+        'INSERT INTO users (userName, userSurname, userEmail, userPassword) VALUES (?, ?, ? ,?)',
+        [userName, userSurname, userEmail, hashedPassword],
+        (err, result) => {
+            res.sendStatus(200);
+        }
+        )
+});
+
+app.post('/login', (req, res) => {
+    const { userEmail, userPassword } = req.body;
+    
+    connection.execute(
+        'SELECT * FROM users WHERE userEmail=?',
+        [userEmail],
+        (err, result) => {
+            if (result.length === 0) {
+                res.send('Incorrect username or password');
+            } else {
+                const passwordHash = result[0].userPassword
+                const isPasswordCorrect = bcrypt.compareSync(userPassword, passwordHash);
+                if (isPasswordCorrect) {
+                    res.send('Successfully logged in!');
+                } else {
+                    res.send('Incorrect username or password');
+                }
+            }  
+        }
+    );
 });
 
 
