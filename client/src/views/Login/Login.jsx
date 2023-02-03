@@ -7,9 +7,12 @@ import { InputStyled } from "../../components/Input/Input";
 export const Login = ({ onSuccess }) => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}/login`, {
             method: 'POST',
             headers: {
@@ -20,14 +23,21 @@ export const Login = ({ onSuccess }) => {
                 userPassword
             })
         })
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.status === 200) {
+                return res.json();
+            }
+
+            throw new Error('Test error');
+        })
         .then((data) => {
             onSuccess(data);
-            console.log(data);
-        })
-        .catch((e)=> {
-            console.log(e);
-        })
+            setIsLoading(false);
+         })
+         .catch((e) => {
+            setError(String(e));
+            setIsLoading(false);
+         })
     }
 
     return (
@@ -38,14 +48,17 @@ export const Login = ({ onSuccess }) => {
                     placeholder="Email"
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
+                    disabled={isLoading}
                 />
                 <InputStyled
                     placeholder="Password"
                     type="password"
                     onChange={(e) => setUserPassword(e.target.value)}
                     value={userPassword}
+                    disabled={isLoading}
                 />
-                <Button>Login</Button>
+                {error &&<div>{error}</div>}
+                <Button disabled={isLoading}>Login</Button>
                 <LinkStyled to="/register">Register</LinkStyled>
             </FormStyled>    
         </LoginContainer>   
