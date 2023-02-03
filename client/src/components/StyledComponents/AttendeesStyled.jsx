@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const AttendeesContainer = styled.div`
+    
+`;
+
 export const AttendeesList = styled.ul`
     display: flex;
     flex-direction: column;

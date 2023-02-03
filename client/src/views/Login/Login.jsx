@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { Button } from "../../components/Button/Button";
+import { FormStyled } from "../../components/Form/Form";
+import { LinkStyled, LoginContainer } from "../../components/StyledComponents/LoginStyled";
+import { InputStyled } from "../../components/Input/Input";
 
 export const Login = ({ onSuccess }) => {
     const [userEmail, setUserEmail] = useState('');
@@ -27,19 +31,23 @@ export const Login = ({ onSuccess }) => {
     }
 
     return (
-        <form onSubmit={handleLogin} >
-            <input 
-                placeholder="Email"
-                onChange={(e) => setUserEmail(e.target.value)}
-                value={userEmail}
-            />
-            <input
-                placeholder="Password"
-                type="password"
-                onChange={(e) => setUserPassword(e.target.value)}
-                value={userPassword}
-            />
-            <button>Login</button>
-        </form>
-    )
+        <LoginContainer>
+             <FormStyled onSubmit={handleLogin} >
+                <h1>Events organizer</h1>
+                <InputStyled 
+                    placeholder="Email"
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    value={userEmail}
+                />
+                <InputStyled
+                    placeholder="Password"
+                    type="password"
+                    onChange={(e) => setUserPassword(e.target.value)}
+                    value={userPassword}
+                />
+                <Button>Login</Button>
+                <LinkStyled to="/register">Register</LinkStyled>
+            </FormStyled>    
+        </LoginContainer>   
+    );
 }

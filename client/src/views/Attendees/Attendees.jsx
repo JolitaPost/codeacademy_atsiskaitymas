@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { LOGGED_IN_USER } from "../../utils/constants";
-import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem } from "../../components/StyledComponents/AttendeesStyled";
+import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem, AttendeesContainer } from "../../components/StyledComponents/AttendeesStyled";
+import { Input } from "../../components/Input/Input";
+import { Button } from "../../components/Button/Button";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -52,34 +54,36 @@ export const Attendees = () => {
     }
 
     return (
+        <AttendeesContainer>
+        <h1>Event attendees</h1>
         <AttendeesList>
             <form onSubmit={handleAttendeeAdd}>
-                <input 
+                <Input 
                     placeholder="Name" 
                     required 
                     onChange={(e) => setName(e.target.value)}
                     value={name}
                 />
-                <input 
+                <Input 
                     placeholder="Surname" 
                     required 
                     onChange={(e) => setSurname(e.target.value)}
                     value={surname}
                 />
-                <input 
+                <Input 
                     placeholder="Email" 
                     required 
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                 />
-                <input 
+                <Input 
                     placeholder="Telephone" 
                     type="number" 
                     required 
                     onChange={(e) => setTelephone(e.target.value)}
                     value={telephone}
                 />
-                <button>Add</button>
+                <Button>Add</Button>
             </form>
             {attendees.map((attendee) => (
             <AttendeesListItem key={attendee.id}>
@@ -90,6 +94,7 @@ export const Attendees = () => {
             </AttendeesListItem>
             ))}
         </AttendeesList>
+        </AttendeesContainer>
     );
 }
 

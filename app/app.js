@@ -46,15 +46,14 @@ app.post('/attendees', (req, res) => {   // pridedu nauja dalyvi i attendees sar
 app.post('/register', (req,res) => {  // prisiregistruoja naujas useris
     const { userName, userSurname, userEmail, userPassword } = req.body;
     const hashedPassword = bcrypt.hashSync(userPassword, 12);
-    bcrypt.compareSync()
 
     connection.execute(
         'INSERT INTO users (userName, userSurname, userEmail, userPassword) VALUES (?, ?, ? ,?)',
         [userName, userSurname, userEmail, hashedPassword],
         (err, result) => {
-            res.sendStatus(200);
-        }
-        )
+                res.send(result);
+            }
+    )
 });
 
 app.post('/login', (req, res) => {
