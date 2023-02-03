@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LOGGED_IN_USER } from "../../utils/constants";
 import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem, AttendeesContainer } from "../../components/StyledComponents/AttendeesStyled";
 import { Input } from "../../components/Input/Input";
 import { Button } from "../../components/Button/Button";
+import { Form } from "../../components/Form/Form";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -39,7 +39,7 @@ export const Attendees = () => {
                 surname,
                 email,
                 telephone,
-                userId: 1
+                userId: LOGGED_IN_USER.id
             })
         })
         .then((res) => res.json())
@@ -57,7 +57,7 @@ export const Attendees = () => {
         <AttendeesContainer>
         <h1>Event attendees</h1>
         <AttendeesList>
-            <form onSubmit={handleAttendeeAdd}>
+            <Form onSubmit={handleAttendeeAdd}>
                 <Input 
                     placeholder="Name" 
                     required 
@@ -84,7 +84,7 @@ export const Attendees = () => {
                     value={telephone}
                 />
                 <Button>Add</Button>
-            </form>
+            </Form>
             {attendees.map((attendee) => (
             <AttendeesListItem key={attendee.id}>
                 <AttendeeName>{attendee.name}</AttendeeName>

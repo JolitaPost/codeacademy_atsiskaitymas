@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const RegisterContainer = styled.div`
     align-items: center;
@@ -7,4 +8,8 @@ export const RegisterContainer = styled.div`
     height: 100vh;
     justify-content: center;
     height: 100vh;
+`;
+
+export const LinkStyled = styled(Link)`
+    align-self: center;
 `;

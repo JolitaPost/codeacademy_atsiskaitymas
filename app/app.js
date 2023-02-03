@@ -2,6 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
+const e = require('cors');
 
 require('dotenv').config();
 
@@ -20,14 +21,14 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-app.get('/attendees', (req,res) => {  // gaunam dalyvius pagal userio id
+app.get('/attendees', (req,res) => { 
     const { userId } = req.query;   
     connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
         res.send(attendees);
     });
 });
 
-app.post('/attendees', (req, res) => {   // pridedu nauja dalyvi i attendees sarasa
+app.post('/attendees', (req, res) => {  
     const { name, surname, email, telephone, userId } = req.body;
 
     connection.execute(
@@ -51,7 +52,9 @@ app.post('/register', (req,res) => {  // prisiregistruoja naujas useris
         'INSERT INTO users (userName, userSurname, userEmail, userPassword) VALUES (?, ?, ? ,?)',
         [userName, userSurname, userEmail, hashedPassword],
         (err, result) => {
-                res.send(result);
+                if (err.code === 'ER_DUP_ENTRY') {
+                    res.sendStatus(400);
+                }
             }
     )
 });
@@ -64,16 +67,14 @@ app.post('/login', (req, res) => {
         [userEmail],
         (err, result) => {
             if (result.length === 0) {
-                res.status(401);
-                res.send('Incorrect username or password');
+                res.sendStatus(401);
             } else {
                 const passwordHash = result[0].userPassword
                 const isPasswordCorrect = bcrypt.compareSync(userPassword, passwordHash);
                 if (isPasswordCorrect) {
                     res.send(result[0]);
                 } else {
-                    res.status(401);
-                    res.send('Incorrect username or password');
+                    res.sendStatus(401);
                 }
             }  
         }

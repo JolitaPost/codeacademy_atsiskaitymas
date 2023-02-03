@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button } from "../../components/Button/Button";
 import { FormStyled } from "../../components/Form/Form";
+import { Form } from "../../components/Form/Form";
 import { LinkStyled, LoginContainer } from "../../components/StyledComponents/LoginStyled";
-import { InputStyled } from "../../components/Input/Input";
+import { Input } from "../../components/Input/Input";
 
 export const Login = ({ onSuccess }) => {
     const [userEmail, setUserEmail] = useState('');
@@ -10,8 +11,7 @@ export const Login = ({ onSuccess }) => {
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+    const handleLogin = () => {
         setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}/login`, {
             method: 'POST',
@@ -24,41 +24,44 @@ export const Login = ({ onSuccess }) => {
             })
         })
         .then((res) => {
-            if (res.status === 200) {
-                return res.json();
+            if (res.status === 401) {
+                throw new Error('Incorrect username or password');
             }
 
-            throw new Error('Test error');
+            if (!res.ok) {
+                throw new Error('Something went wrong');
+            }
+
+            return res.json();
+            
         })
         .then((data) => {
             onSuccess(data);
             setIsLoading(false);
          })
          .catch((e) => {
-            setError(String(e));
+            setError(e.message);
             setIsLoading(false);
          })
     }
 
     return (
         <LoginContainer>
-             <FormStyled onSubmit={handleLogin} >
+             <FormStyled onSubmit={handleLogin} disabled={isLoading} column>
                 <h1>Events organizer</h1>
-                <InputStyled 
+                <Input 
                     placeholder="Email"
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
-                    disabled={isLoading}
                 />
-                <InputStyled
+                <Input
                     placeholder="Password"
                     type="password"
                     onChange={(e) => setUserPassword(e.target.value)}
                     value={userPassword}
-                    disabled={isLoading}
                 />
                 {error &&<div>{error}</div>}
-                <Button disabled={isLoading}>Login</Button>
+                <Button>Login</Button>
                 <LinkStyled to="/register">Register</LinkStyled>
             </FormStyled>    
         </LoginContainer>   
