@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+/*import styled from 'styled-components';
 
 export const AttendeesContainer = styled.div`
     
@@ -23,6 +23,7 @@ export const AttendeesListItem = styled.li`
     position: relative;
 `;
 
+
 export const AttendeeName = styled.span`
     color: darkslateblue;
     font-size: 24px;
@@ -38,4 +39,4 @@ export const AttendeeData = styled.span`
     white-space: nowrap;
     overflow: hidden;
 `;
-
+*/

@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+//import { Link } from 'react-router-dom';
+//import styled from 'styled-components';
 
-export const LoginContainer = styled.div`
+/*export const LoginContainer = styled.div`
     align-items: center;
     background-color: lightgrey;
     display: flex;
@@ -9,8 +9,9 @@ export const LoginContainer = styled.div`
     justify-content: center;
     height: 100vh;
 `;
-export const LinkStyled = styled(Link)`
+export const LinkStyled = styled.link`
     align-self: center;
 `;
+*/
 
 

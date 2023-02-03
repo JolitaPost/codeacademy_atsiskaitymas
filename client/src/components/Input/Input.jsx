@@ -12,6 +12,6 @@ export const InputStyled = styled.input`
     }
 `;
 
-export const Input = (props) => {
+export const Input = ({props}) => {
     return <InputStyled {...props} />
 }

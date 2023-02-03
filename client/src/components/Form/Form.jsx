@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
-export const FormStyled = styled(Form)`
-    max-width: 100%;
-    padding: 20px;
-    width: 400px;
+export const FormStyled = styled.form`
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 const FieldsetStyled = styled.fieldset`
     border: 0;
     display: flex;
-    flex-direction: ${({ column })=> column ? 'column' : 'row'};
+    flex-direction: ${({ column }) => column ? 'column' : 'row'};
     gap: 5px;
     padding: 0;
 `;

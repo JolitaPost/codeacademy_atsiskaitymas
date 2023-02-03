@@ -1,11 +1,34 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "../../components/Button/Button";
-import { LinkStyled, RegisterContainer } from "../../components/StyledComponents/RegisterStyled";
-import { Form, FormStyled } from "../../components/Form/Form";
-import { Link } from "../../components/StyledComponents/LoginStyled";
+//import { LinkStyled, RegisterContainer } from "../../components/StyledComponents/RegisterStyled";
+import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
+import styled from 'styled-components';
 
+const RegisterContainer = styled.div`
+    align-items: center;
+    background-color: lightgrey;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    height: 100vh;
+`;
+
+const LinkStyled = styled(Link)`
+    align-self: center;
+`;
+
+const FormStyled = styled(Form)`
+    max-width: 100%;
+    padding: 20px;
+    width: 400px;
+`;
+
+const ErrorStyled = styled.div`
+    color:red;
+    text-align: center;
+`;
 
     export const Register = () => {
     const navigate = useNavigate();
@@ -16,20 +39,17 @@ import { Input } from "../../components/Input/Input";
     const [error, setError] = useState;
     const [isLoading, setIsLoading] = useState(false);
 
+
     const handleRegister = () => {
         setIsLoading(true);
+
         fetch(`${process.env.REACT_APP_API_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                userName,
-                userSurname,
-                userEmail,
-                userPassword
-            })
-        })
+            body: JSON.stringify({ userEmail, userPassword })
+         }) 
             .then((res) => {
                 if (res.status === 400) {
                     throw new Error('User already exists');
@@ -78,7 +98,7 @@ import { Input } from "../../components/Input/Input";
                     onChange={(e) => setUserPassword(e.target.value)}
                      value={userPassword}
                 /> 
-                {error && <div>{error}</div>}       
+                {error && <ErrorStyled>{error}</ErrorStyled>}       
                 <Button>Register</Button>
                 <LinkStyled to="/login">Login</LinkStyled>
             </FormStyled>

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+//import styled from 'styled-components';
+//import { Link } from 'react-router-dom';
 
-export const RegisterContainer = styled.div`
+/*export const RegisterContainer = styled.div`
     align-items: center;
     background-color: lightgrey;
     display: flex;
@@ -10,6 +10,7 @@ export const RegisterContainer = styled.div`
     height: 100vh;
 `;
 
-export const LinkStyled = styled(Link)`
+export const LinkStyled = styled.link`
     align-self: center;
 `;
+*/
