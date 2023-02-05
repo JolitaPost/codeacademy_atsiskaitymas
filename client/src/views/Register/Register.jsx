@@ -1,22 +1,34 @@
 import { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { Button } from "../../components/Button/Button";
-//import { LinkStyled, RegisterContainer } from "../../components/StyledComponents/RegisterStyled";
 import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
-import styled from 'styled-components';
+
 
 const RegisterContainer = styled.div`
     align-items: center;
-    background-color: lightgrey;
+    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
     display: flex;
-    height: 100vh;
     justify-content: center;
     height: 100vh;
 `;
 
 const LinkStyled = styled(Link)`
     align-self: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 10px;
+    text-decoration: none; 
+`;
+
+const LabelStyled = styled.label`
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 0.25rem 0;
 `;
 
 const FormStyled = styled(Form)`
@@ -26,17 +38,27 @@ const FormStyled = styled(Form)`
 `;
 
 const ErrorStyled = styled.div`
-    color:red;
+    color: red;
     text-align: center;
 `;
 
+const TitleStyled = styled.h1`
+    align-self: center;
+    color: white;   
+`;
+
+const EventTitleStyled = styled.h1`
+    align-self: center;
+    color: #7439db;
+`;
+
     export const Register = () => {
-    const navigate = useNavigate();
-    const [ userName, setUserName ] = useState();
-    const [ userSurname, setUserSurname ] = useState();
+    const navigate = useNavigate('');
+    const [userName, setUserName] = useState('');
+    const [userSurname, setUserSurname] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const [error, setError] = useState;
+    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -76,31 +98,36 @@ const ErrorStyled = styled.div`
     return (
         <RegisterContainer>
             <FormStyled onSubmit={handleRegister} disabled={isLoading} column>
-                <h1>Register</h1>
+                <EventTitleStyled>EVENT ORGANIZER</EventTitleStyled>
+                <TitleStyled>Register</TitleStyled> 
+                <LabelStyled htmlFor="name">Name</LabelStyled>
                 <Input
-                    placeholder="Name"
+                    placeholder="name" 
                     onChange={(e) => setUserName(e.target.value)}
                     value={userName}    
                  />
+                 <LabelStyled htmlFor="surname">Surname</LabelStyled>
                 <Input
-                    placeholder="Surname"
+                    placeholder="surname" 
                     onChange={(e) => setUserSurname(e.target.value)}
                     value={userSurname}    
                 />
+                <LabelStyled htmlFor="email">Email</LabelStyled>
                 <Input
-                    placeholder="Email"
+                    placeholder="youremail@gmail.com" 
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
                 />
+                <LabelStyled htmlFor="password">Password</LabelStyled>
                 <Input
-                    placeholder="Password"
+                    placeholder="********"
                     type="password"
                     onChange={(e) => setUserPassword(e.target.value)}
                      value={userPassword}
                 /> 
                 {error && <ErrorStyled>{error}</ErrorStyled>}       
                 <Button>Register</Button>
-                <LinkStyled to="/login">Login</LinkStyled>
+                <LinkStyled to="/login">Already have an account? Login here.</LinkStyled>
             </FormStyled>
         </RegisterContainer>
     );

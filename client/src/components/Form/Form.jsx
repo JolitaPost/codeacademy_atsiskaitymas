@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
-export const FormStyled = styled.form`
-    background-color: #fff;
+const FormStyled = styled.form`
+    background-color: none;
+    border: 1px solid white;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0.5rem;
 `;
 
 const FieldsetStyled = styled.fieldset`

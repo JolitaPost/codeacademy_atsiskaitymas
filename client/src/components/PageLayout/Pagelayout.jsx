@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContextWrapper";
 import { Button } from '../Button/Button';

@@ -1,9 +1,9 @@
-const cors = require('cors');
+const cors = require ('cors');
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const e = require('cors');
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 
@@ -22,30 +22,78 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-app.get('/attendees', (req,res) => { 
-    const { userId } = req.query;   
-    connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
+const getUserFromToken = (req) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    return user;
+}
+
+const verifyToken = (req, res, next) => {
+    try {
+        getUserFromToken(req);
+        next();
+    } catch(e) {
+        res.send({ error: 'Invalid Token' });
+    }
+}
+
+app.get('/attendees', verifyToken, (req,res) => { 
+    const user = getUserFromToken(req);   
+
+    connection.execute('SELECT * FROM attendees WHERE userId=?', [user.id], (err, attendees) => {
         res.send(attendees);
     });
 });
 
-app.post('/attendees', (req, res) => {  
-    const { name, surname, email, telephone, userId } = req.body;
+
+app.post('/attendees', verifyToken, (req, res) => {  
+    const { name, surname, email, telephone, timestamp } = req.body;
+    const { id } = getUserFromToken(req);
+
+    const sqlQuery = timestamp ?
+    'INSERT INTO attendees (name, surname, email, telephone, timestamp, userId) VALUES (?, ?, ?, ?, ?, ?)':
+    'INSERT INTO attendees (name, surname, email, telephone, userId) VALUES (?, ?, ?, ?, ?, ?)';
+
+    const data = [name, surname, email, telephone, id];
+    if (timestamp) {
+        data.push(timestamp);
+    }
 
     connection.execute(
-        'INSERT INTO attendees (name, surname, email, telephone, userId) VALUES (?, ?, ?, ?, ?)',
-        [name, surname, email, telephone, userId],
-        (err, result) => {
-            connection.execute('SELECT * FROM attendees WHERE userID=?',
-            [userId],
-            (err, attendees) => {
-                res.send(attendees);
-            })
+        sqlQuery,
+        data,
+        () => {
+            connection.execute(
+                'SELECT * FROM attendees WHERE userId=?',
+                [id],
+                (err, attendees) => {
+                    res.send(attendees);
+                }
+            )
         }
     )
 });
 
-app.post('/register', (req,res) => {  // prisiregistruoja naujas useris
+app.delete('/attendees/:id', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { id: userId } = getUserFromToken(req);
+
+    connection.execute(
+        'DELETE FROM attendees WHERE id=? AND userId=?',
+        [id, userId],
+        () => {
+            connection.execute(
+                'SELECT * FROM attendees WHERE userId=?',
+                [userId],
+                (err, attendees) => {
+                    res.send(attendees);
+                }
+            )
+        }
+    )
+});
+
+app.post('/register', (req,res) => { 
     const { userName, userSurname, userEmail, userPassword } = req.body;
     const hashedPassword = bcrypt.hashSync(userPassword, 12);
 
@@ -53,10 +101,12 @@ app.post('/register', (req,res) => {  // prisiregistruoja naujas useris
         'INSERT INTO users (userName, userSurname, userEmail, userPassword) VALUES (?, ?, ? ,?)',
         [userName, userSurname, userEmail, hashedPassword],
         (err, result) => {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    res.sendStatus(400);
-                }
+            if (err?.code === 'ER_DUP_ENTRY') {
+                res.sendStatus(400);
             }
+
+            res.send(result);
+        }
     )
 });
 
@@ -70,16 +120,42 @@ app.post('/login', (req, res) => {
             if (result.length === 0) {
                 res.sendStatus(401);
             } else {
-                const passwordHash = result[0].userPassword
-                const isPasswordCorrect = bcrypt.compareSync(userPassword, passwordHash);
+                const userPasswordHash = result[0].userPassword
+                const isPasswordCorrect = bcrypt.compareSync(userPassword, userPasswordHash);
                 if (isPasswordCorrect) {
-                    res.send(result[0]);
+                    const { id, userEmail } = result[0];
+                    const token = jwt.sign({ id, userEmail }, process.env.JWT_SECRET_KEY);
+                    res.send({ token, id, userEmail });
                 } else {
                     res.sendStatus(401);
                 }
             }  
         }
     );
+});
+
+app.get('/token/verify', (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        res.send(user);
+    } catch(e) {
+        res.send({ error: 'Invalid Token' });
+    }
+});
+
+app.get('/test/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+        const data = await response.json();
+
+        connection.execute('INSERT INTO test(title) VALUES (?)', [data.title], (err, result) => {
+            res.send(data);
+        });
+    } catch(e) {
+        res.send('Something went wrong');
+    }
 });
 
 

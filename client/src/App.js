@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { PageLayout } from './components/PageLayout/Pagelayout';
-import { UserContext} from './contexts/UserContextWrapper';
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from './constants/constants';
+import { UserContext} from './contexts/UserContextWrapper';
 import { Attendees } from './views/Attendees/Attendees';
 import { Login } from './views/Login/Login';
 import { Register } from './views/Register/Register';
@@ -23,13 +23,13 @@ function App() {
       .then(res => res.json())
       .then(data => {
         if (!data.error) {
-          const { id, email } = data;
-          setUser({ id, email });
+          const { id, userEmail } = data;
+          setUser({ id, userEmail });
           navigate('/');
         }
       });
     }
-  }, []);
+  }, [navigate, setUser]);
 
   return (
     <div>
@@ -40,11 +40,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
-      </Routes>
-      
+      </Routes>   
     </div>
-  )
-
-};
+  );
+}
 
 export default App;

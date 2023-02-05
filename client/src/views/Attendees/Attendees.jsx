@@ -1,27 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-//import { AttendeeData, AttendeeName, AttendeesList, AttendeesListItem, AttendeesContainer } from "../../components/StyledComponents/AttendeesStyled";
-import { Input } from "../../components/Input/Input";
+import styled from 'styled-components';
 import { Button } from "../../components/Button/Button";
 import { Form } from "../../components/Form/Form";
-import styled from 'styled-components';
+import { Input } from "../../components/Input/Input";
 import { UserContext } from '../../contexts/UserContextWrapper';
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
+import { DateTime } from 'luxon';
 
-const HoverOverlay = styled.div`
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    content: '';
+const AttendeesContainer = styled.div`
+    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
     display: flex;
-    height: 100%auto;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    width: 100%;
-`;
-
-const HoverOverlayContent = styled.li`
-    color: red;
-    font-size: 16px;
+    justify-content: left;
+    height: 100vh;
 `;
 
 const AttendeesList = styled.ul`
@@ -29,6 +19,23 @@ const AttendeesList = styled.ul`
     flex-direction: column;
     gap: 8px;
     list-style: none;
+`;
+
+const HoverOverlay = styled.div`
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    content: '';
+    display: flex;
+    height: 100% auto;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    width: 100%;
+`;
+
+const HoverOverlayContent = styled.div`
+    color: red;
+    font-size: 16px;
 `;
 
 const AttendeesListItem = styled.li`
@@ -54,7 +61,7 @@ const AttendeesListItem = styled.li`
 `;
 
 const AttendeeName = styled.span`
-    color: darkslateblue;
+    color: #7439db;
     font-size: 24px;
     font-weight: 700;
 
@@ -76,6 +83,7 @@ export const Attendees = () => {
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [telephone, setTelephone] = useState('');
+    const [date, setDate] = useState('');
     const { user } = useContext(UserContext);
 
 
@@ -110,6 +118,7 @@ export const Attendees = () => {
                 surname,
                 email,
                 telephone,
+                timestap: date,
                 userId: user.id
             })
         })
@@ -141,6 +150,7 @@ export const Attendees = () => {
     }
 
     return (
+        <AttendeesContainer>
         <AttendeesList>
             <Form onSubmit={handleAttendeeAdd}>
                 <Input 
@@ -168,17 +178,28 @@ export const Attendees = () => {
                     onChange={(e) => setTelephone(e.target.value)}
                     value={telephone}
                 />
+                <Input 
+                    placeholder="Date" 
+                    type="date-local"  
+                    onChange={(e) => setDate(e.target.value)}
+                    value={date}
+                />
                 <Button>Add</Button>
             </Form>
             {attendees.map((attendee) => (
             <AttendeesListItem key={attendee.id} onClick={() => handleDeleteAttendee(attendee.id)} >
+                <HoverOverlay>
+                    <HoverOverlayContent>DELETE</HoverOverlayContent>
+                </HoverOverlay>
                 <AttendeeName>{attendee.name}</AttendeeName>
                 <AttendeeName>{attendee.surname}</AttendeeName>
                 <AttendeeData>{attendee.email}</AttendeeData>
-                <AttendeeData>{attendee.telephone}</AttendeeData>
+                <AttendeeData>{attendee.telephone} ({DateTime.fromISO(attendee.timestamp).toFormat('yyy-LL-dd HH:mm')})
+                </AttendeeData>
             </AttendeesListItem>
             ))}
         </AttendeesList>
+    </AttendeesContainer>
     );
 }
 

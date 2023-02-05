@@ -1,24 +1,35 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../../components/Button/Button";
-//import { FormStyled } from "../../components/Form/Form";
-import { Form } from "../../components/Form/Form";
-//import { LinkStyled, LoginContainer } from "../../components/StyledComponents/LoginStyled";
-import { Input } from "../../components/Input/Input";
 import styled from 'styled-components';
+import { Button } from "../../components/Button/Button";
+import { Form } from "../../components/Form/Form";
+import { Input } from "../../components/Input/Input";
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 import { UserContext } from "../../contexts/UserContextWrapper";
 
 const LoginContainer = styled.div`
     align-items: center;
-    background-color: lightgrey;
+    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
     display: flex;
     height: 100vh;
     justify-content: center;
     height: 100vh;
 `;
+
 const LinkStyled = styled(Link)`
     align-self: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 10px;
+    text-decoration: none; 
+`;
+
+const LabelStyled = styled.label`
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 0.25rem 0;
 `;
 
 const FormStyled = styled(Form)`
@@ -32,6 +43,16 @@ const ErrorStyled = styled.div`
     text-align: center;
 `;
 
+const TitleStyled = styled.h1`
+    color: white;
+    align-self: center;
+`;
+
+const EventTitleStyled = styled.h1`
+    align-self: center;
+    color: #7439db;
+`;
+
 
 export const Login = () => {
     const [userEmail, setUserEmail] = useState('');
@@ -42,7 +63,7 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        setIsLoading(true);
+        setIsLoading("true");
 
         fetch(`${process.env.REACT_APP_API_URL}/login`, {
             method: 'POST',
@@ -67,9 +88,9 @@ export const Login = () => {
             
         })
         .then((data) => {
-            const { id, email, token } = data;
+            const { id, userEmail, token } = data;
             localStorage.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, token);
-            setUser({ id, email });
+            setUser({ id, userEmail });
             setIsLoading(false);
             setError('');
             navigate('/');
@@ -83,21 +104,24 @@ export const Login = () => {
     return (
         <LoginContainer>
              <FormStyled onSubmit={handleLogin} disabled={isLoading} column>
-                <h1>Events organizer</h1>
+                <EventTitleStyled>EVENT ORGANIZER</EventTitleStyled>
+                <TitleStyled>Login</TitleStyled>
+                <LabelStyled htmlFor="email">Email</LabelStyled>
                 <Input 
-                    placeholder="Email"
+                    placeholder="youremail@gmail.com" 
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
                 />
+                <LabelStyled htmlFor="password">Password</LabelStyled>
                 <Input
-                    placeholder="Password"
-                    type="password"
+                    placeholder="**********"
+                    type="password" 
                     onChange={(e) => setUserPassword(e.target.value)}
                     value={userPassword}
                 />
                 {error &&<ErrorStyled>{error}</ErrorStyled>}
-                <Button>Login</Button>
-                <LinkStyled to="/register">Register</LinkStyled>
+                <Button>Log In</Button>
+                <LinkStyled to="/register">Don't have an account? Register here.</LinkStyled>
             </FormStyled>    
         </LoginContainer>   
     );
