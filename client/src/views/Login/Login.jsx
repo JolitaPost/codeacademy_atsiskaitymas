@@ -4,7 +4,7 @@ import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 import { UserContext } from "../../contexts/UserContextWrapper";
-import { LoginContainer, LinkStyled, LabelStyled, FormStyled, ErrorStyled, TitleStyled, EventTitleStyled } from "../../components/StyledComponents/LoginStyled";
+import { LoginContainer, LinkStyled, LabelStyled, FormStyled, ErrorStyled, TitleStyled, EventTitleStyled } from "../../components/StyledViews/LoginStyled";
 
 export const Login = () => {
     const [userEmail, setUserEmail] = useState('');

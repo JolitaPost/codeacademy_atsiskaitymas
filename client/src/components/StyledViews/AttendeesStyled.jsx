@@ -8,7 +8,7 @@ export const AttendeesContainer = styled.div`
 `;
 
 export const AttendeesList = styled.div`
-align-items: left;
+    align-items: left;
     display: flex;
     flex-direction: column;
     gap: 8px;

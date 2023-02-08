@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-//import styled from 'styled-components';
-import { AttendeeData, AttendeesContainer, AttendeesList, AttendeesListItem, HoverOverlay,HoverOverlayContent, TitleStyled } from "../../components/StyledComponents/AttendeesStyled";
+import { AttendeeData, AttendeesContainer, AttendeesList, AttendeesListItem, HoverOverlay,HoverOverlayContent, TitleStyled } from "../../components/StyledViews/AttendeesStyled";
 import { Button } from "../../components/Button/Button";
 import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";

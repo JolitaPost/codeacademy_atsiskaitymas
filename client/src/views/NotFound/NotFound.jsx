@@ -1,4 +1,4 @@
-import { NotFoundStyled, LinkStyled } from "../../components/StyledComponents/NotFound";
+import { NotFoundStyled, LinkStyled } from "../../components/StyledViews/NotFound";
 
 export const NotFound = () => {
     return (

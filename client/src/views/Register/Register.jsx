@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { RegisterContainer, FormStyled, EventTitleStyled, LabelStyled, TitleStyled, ErrorStyled, LinkStyled } from "../../components/StyledComponents/RegisterStyled";
+import { RegisterContainer, FormStyled, EventTitleStyled, LabelStyled, TitleStyled, ErrorStyled, LinkStyled } from "../../components/StyledViews/RegisterStyled";
 
 
     export const Register = () => {

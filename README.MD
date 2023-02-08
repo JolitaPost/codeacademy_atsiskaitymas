@@ -1,4 +1,5 @@
 # Events organizer
+This is an application for registering attendees to the event.
 
 ## BE instructions
 1) Run `npm install`
