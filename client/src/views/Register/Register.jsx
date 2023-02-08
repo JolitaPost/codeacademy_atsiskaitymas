@@ -1,59 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button } from "../../components/Button/Button";
-import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
+import { RegisterContainer, FormStyled, EventTitleStyled, LabelStyled, TitleStyled, ErrorStyled, LinkStyled } from "../../components/StyledComponents/RegisterStyled";
 
-
-const RegisterContainer = styled.div`
-    align-items: center;
-    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-`;
-
-const LinkStyled = styled(Link)`
-    align-self: center;
-    color: white;
-    font-size: 18px;
-    font-weight: 400;
-    padding: 10px;
-    text-decoration: none; 
-`;
-
-const LabelStyled = styled.label`
-    color: white;
-    font-size: 16px;
-    font-weight: 400;
-    padding: 0.25rem 0;
-`;
-
-const FormStyled = styled(Form)`
-    max-width: 100%;
-    padding: 20px;
-    width: 400px;
-`;
-
-const ErrorStyled = styled.div`
-    color: red;
-    text-align: center;
-`;
-
-const TitleStyled = styled.h1`
-    align-self: center;
-    color: white;   
-`;
-
-const EventTitleStyled = styled.h1`
-    align-self: center;
-    color: #7439db;
-`;
 
     export const Register = () => {
-    const navigate = useNavigate('');
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [userSurname, setUserSurname] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -70,7 +23,7 @@ const EventTitleStyled = styled.h1`
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ userEmail, userPassword })
+            body: JSON.stringify({ userName, userSurname, userEmail, userPassword })
          }) 
             .then((res) => {
                 if (res.status === 400) {
@@ -102,25 +55,25 @@ const EventTitleStyled = styled.h1`
                 <TitleStyled>Register</TitleStyled> 
                 <LabelStyled htmlFor="name">Name</LabelStyled>
                 <Input
-                    placeholder="name" 
+                    placeholder="name" required
                     onChange={(e) => setUserName(e.target.value)}
                     value={userName}    
                  />
                  <LabelStyled htmlFor="surname">Surname</LabelStyled>
                 <Input
-                    placeholder="surname" 
+                    placeholder="surname" required
                     onChange={(e) => setUserSurname(e.target.value)}
                     value={userSurname}    
                 />
                 <LabelStyled htmlFor="email">Email</LabelStyled>
                 <Input
-                    placeholder="youremail@gmail.com" 
+                    placeholder="youremail@gmail.com" reguired
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
                 />
                 <LabelStyled htmlFor="password">Password</LabelStyled>
                 <Input
-                    placeholder="********"
+                    placeholder="********" required
                     type="password"
                     onChange={(e) => setUserPassword(e.target.value)}
                      value={userPassword}

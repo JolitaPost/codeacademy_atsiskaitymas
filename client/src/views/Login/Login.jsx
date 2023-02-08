@@ -1,58 +1,10 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
-import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 import { UserContext } from "../../contexts/UserContextWrapper";
-
-const LoginContainer = styled.div`
-    align-items: center;
-    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    height: 100vh;
-`;
-
-const LinkStyled = styled(Link)`
-    align-self: center;
-    color: white;
-    font-size: 18px;
-    font-weight: 400;
-    padding: 10px;
-    text-decoration: none; 
-`;
-
-const LabelStyled = styled.label`
-    color: white;
-    font-size: 16px;
-    font-weight: 400;
-    padding: 0.25rem 0;
-`;
-
-const FormStyled = styled(Form)`
-    max-width: 100%;
-    padding: 20px;
-    width: 400px;
-`;
-
-const ErrorStyled = styled.div`
-    color:red;
-    text-align: center;
-`;
-
-const TitleStyled = styled.h1`
-    color: white;
-    align-self: center;
-`;
-
-const EventTitleStyled = styled.h1`
-    align-self: center;
-    color: #7439db;
-`;
-
+import { LoginContainer, LinkStyled, LabelStyled, FormStyled, ErrorStyled, TitleStyled, EventTitleStyled } from "../../components/StyledComponents/LoginStyled";
 
 export const Login = () => {
     const [userEmail, setUserEmail] = useState('');
@@ -108,13 +60,13 @@ export const Login = () => {
                 <TitleStyled>Login</TitleStyled>
                 <LabelStyled htmlFor="email">Email</LabelStyled>
                 <Input 
-                    placeholder="youremail@gmail.com" 
+                    placeholder="youremail@gmail.com" required
                     onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
                 />
                 <LabelStyled htmlFor="password">Password</LabelStyled>
                 <Input
-                    placeholder="**********"
+                    placeholder="**********" required
                     type="password" 
                     onChange={(e) => setUserPassword(e.target.value)}
                     value={userPassword}

@@ -1,20 +1,11 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-
-const NotFoundStyled = styled.div`
-    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D );
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    justify-content: center;
-`;
+import { NotFoundStyled, LinkStyled } from "../../components/StyledComponents/NotFound";
 
 export const NotFound = () => {
     return (
         <NotFoundStyled>
+            <img src={process.env.PUBLIC_URL + "/TUX-G2-SVG.svg.png"} width="300" alt="logo" />
             <h1>Page not found</h1>
-            <Link to="/">Go to Login page</Link>
+            <LinkStyled to="/">Go to Login page</LinkStyled>
         </NotFoundStyled>
     );
 }

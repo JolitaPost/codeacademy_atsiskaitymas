@@ -3,7 +3,6 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const fetch = require('node-fetch');
 
 require('dotenv').config();
 
@@ -47,21 +46,12 @@ app.get('/attendees', verifyToken, (req,res) => {
 
 
 app.post('/attendees', verifyToken, (req, res) => {  
-    const { name, surname, email, telephone, timestamp } = req.body;
+    const { name, surname, email, telephone } = req.body;
     const { id } = getUserFromToken(req);
 
-    const sqlQuery = timestamp ?
-    'INSERT INTO attendees (name, surname, email, telephone, timestamp, userId) VALUES (?, ?, ?, ?, ?, ?)':
-    'INSERT INTO attendees (name, surname, email, telephone, userId) VALUES (?, ?, ?, ?, ?, ?)';
-
-    const data = [name, surname, email, telephone, id];
-    if (timestamp) {
-        data.push(timestamp);
-    }
-
     connection.execute(
-        sqlQuery,
-        data,
+        'INSERT INTO attendees (name, surname, email, telephone, userId) VALUES (?, ?, ?, ?, ?)',
+        [name, surname, email, telephone, id],
         () => {
             connection.execute(
                 'SELECT * FROM attendees WHERE userId=?',
@@ -141,20 +131,6 @@ app.get('/token/verify', (req, res) => {
         res.send(user);
     } catch(e) {
         res.send({ error: 'Invalid Token' });
-    }
-});
-
-app.get('/test/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
-        const data = await response.json();
-
-        connection.execute('INSERT INTO test(title) VALUES (?)', [data.title], (err, result) => {
-            res.send(data);
-        });
-    } catch(e) {
-        res.send('Something went wrong');
     }
 });
 
